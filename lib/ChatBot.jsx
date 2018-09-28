@@ -39,6 +39,7 @@ class ChatBot extends Component {
       speaking: false,
       recognitionEnable: props.recognitionEnable && Recognition.isSupported(),
       defaultUserSettings: {},
+      sessionId: Date.now()
     };
 
     this.renderStep = this.renderStep.bind(this);
@@ -400,12 +401,12 @@ class ChatBot extends Component {
       currentStep = Object.assign({}, defaultUserSettings, currentStep, step);
 
       renderedSteps.push(currentStep);
-      // previousSteps.push(currentStep);
+      previousSteps.push(currentStep);
       console.log(this.state);
       this.setState({
         currentStep,
         renderedSteps,
-        // previousSteps,
+        previousSteps,
         disabled: true,
         inputValue: '',
       }, () => {
@@ -431,7 +432,7 @@ class ChatBot extends Component {
 
     let dialogflowOptions = {
       lang: 'en',
-      sessionId: Date.now(),
+      sessionId: this.state.sessionId,
       query: null,
     }
 
@@ -443,14 +444,15 @@ class ChatBot extends Component {
     config.data.query = message;
 
     try {
-      console.log(config.url);
       let result = await axios(config);
-      let response = result.data.result.fulfillment.messages[0].displayText;
-      let message = Object.assign({}, this.state.renderedSteps[0], { message: response })
-      this.state.renderedSteps.push(message);
+      console.log(result.data);
+      let response = result.data.result.fulfillment.messages[0].displayText || result.data.result.fulfillment.speech;
+      let message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
       
+      // console.log("result", result);
+      
+      this.state.renderedSteps.push(message);
       this.setState({ renderedSteps: this.state.renderedSteps });
-      console.log("result", result);
     }
     catch (err) {
       console.log("err", err);
