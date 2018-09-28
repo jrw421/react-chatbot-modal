@@ -56,7 +56,7 @@ class ChatBot extends Component {
     this.getBotResponseFromServer = this.getBotResponseFromServer.bind(this);
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     const {
       botDelay,
       botAvatar,
@@ -71,26 +71,61 @@ class ChatBot extends Component {
 
     const defaultBotSettings = { delay: botDelay, avatar: botAvatar };
     const defaultUserSettings = { delay: userDelay, avatar: userAvatar };
-    const defaultCustomSettings = { delay: customDelay };
+    // const defaultCustomSettings = { delay: customDelay };
 
-    for (let i = 0, len = this.props.steps.length; i < len; i += 1) {
-      const step = this.props.steps[i];
-      let settings = {};
-
-      if (step.user) {
-        settings = defaultUserSettings;
-      } else if (step.message || step.asMessage) {
-        settings = defaultBotSettings;
-      } else if (step.component) {
-        settings = defaultCustomSettings;
+    // for (let i = 0, len = this.props.steps.length; i < len; i += 1) {
+    const url = "https://api.dialogflow.com/v1/query?v=20150910";
+    const clientToken = "d91096f647be47489a2884294259935b";
+    let config = {
+      method: 'post',
+      url: url,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${clientToken}`,
+        'content-type': 'application/json',
       }
-
-      steps[step.id] = Object.assign({}, settings, schema.parse(step));
     }
+
+    let dialogflowOptions = {
+      lang: 'en',
+      sessionId: this.state.sessionId,
+    }
+
+    dialogflowOptions.originalRequest = { data: {} };
+    dialogflowOptions.originalRequest.data = { user: {} };
+    dialogflowOptions.originalRequest.data.user.accessToken = "";
+
+    config.data = dialogflowOptions;
+    config.data.event = { name: "welcome" };
+    let response;
+    try {
+      response = await axios(config);
+      console.log("welcome", response.data);
+    }
+    catch (err) {
+      console.log("err", err)
+    }
+    const step = {
+      id: '1',
+      message: response.data.result.fulfillment.messages[0].displayText || "Hi",
+      end: true
+    };
+    let settings = defaultBotSettings;
+
+    // if (step.user) {
+    // settings = defaultUserSettings;
+    // } else if (step.message || step.asMessage) {
+    settings = defaultBotSettings;
+    // } else if (step.component) {
+    // settings = defaultCustomSettings;
+    // }
+
+    steps[step.id] = Object.assign({}, settings, schema.parse(step));
+    // }
 
     schema.checkInvalidIds(steps);
 
-    const firstStep = this.props.steps[0];
+    const firstStep = steps[step.id];
 
     if (firstStep.message) {
       const message = firstStep.message;
@@ -448,9 +483,9 @@ class ChatBot extends Component {
       console.log(result.data);
       let response = result.data.result.fulfillment.messages[0].displayText || result.data.result.fulfillment.speech;
       let message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
-      
+
       // console.log("result", result);
-      
+
       this.state.renderedSteps.push(message);
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
