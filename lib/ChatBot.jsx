@@ -45,7 +45,7 @@ class ChatBot extends Component {
     this.renderStep = this.renderStep.bind(this);
     this.getTriggeredStep = this.getTriggeredStep.bind(this);
     this.generateRenderedStepsById = this.generateRenderedStepsById.bind(this);
-    this.triggerNextStep = this.triggerNextStep.bind(this);
+    // this.triggerNextStep = this.triggerNextStep.bind(this);
     this.onResize = this.onResize.bind(this);
     this.onValueChange = this.onValueChange.bind(this);
     this.onRecognitionChange = this.onRecognitionChange.bind(this);
@@ -56,7 +56,7 @@ class ChatBot extends Component {
     this.getBotResponseFromServer = this.getBotResponseFromServer.bind(this);
   }
 
-  componentWillMount() {
+  async componentWillMount() {
     const {
       botDelay,
       botAvatar,
@@ -71,26 +71,61 @@ class ChatBot extends Component {
 
     const defaultBotSettings = { delay: botDelay, avatar: botAvatar };
     const defaultUserSettings = { delay: userDelay, avatar: userAvatar };
-    const defaultCustomSettings = { delay: customDelay };
+    // const defaultCustomSettings = { delay: customDelay };
 
-    for (let i = 0, len = this.props.steps.length; i < len; i += 1) {
-      const step = this.props.steps[i];
-      let settings = {};
-
-      if (step.user) {
-        settings = defaultUserSettings;
-      } else if (step.message || step.asMessage) {
-        settings = defaultBotSettings;
-      } else if (step.component) {
-        settings = defaultCustomSettings;
+    // for (let i = 0, len = this.props.steps.length; i < len; i += 1) {
+    const url = "https://api.dialogflow.com/v1/query?v=20150910";
+    const clientToken = "d91096f647be47489a2884294259935b";
+    let config = {
+      method: 'post',
+      url: url,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${clientToken}`,
+        'content-type': 'application/json',
       }
-
-      steps[step.id] = Object.assign({}, settings, schema.parse(step));
     }
+
+    let dialogflowOptions = {
+      lang: 'en',
+      sessionId: this.state.sessionId,
+    }
+
+    dialogflowOptions.originalRequest = { data: {} };
+    dialogflowOptions.originalRequest.data = { user: {} };
+    dialogflowOptions.originalRequest.data.user.accessToken = "";
+
+    config.data = dialogflowOptions;
+    config.data.event = { name: "welcome" };
+    let response;
+    try {
+      response = await axios(config);
+      console.log("welcome", response.data);
+    }
+    catch (err) {
+      console.log("err", err)
+    }
+    const step = {
+      id: '1',
+      message: response.data.result.fulfillment.messages[0].displayText || "Hi",
+      end: true
+    };
+    let settings = defaultBotSettings;
+
+    // if (step.user) {
+    // settings = defaultUserSettings;
+    // } else if (step.message || step.asMessage) {
+    settings = defaultBotSettings;
+    // } else if (step.component) {
+    // settings = defaultCustomSettings;
+    // }
+
+    steps[step.id] = Object.assign({}, settings, schema.parse(step));
+    // }
 
     schema.checkInvalidIds(steps);
 
-    const firstStep = this.props.steps[0];
+    const firstStep = steps[step.id];
 
     if (firstStep.message) {
       const message = firstStep.message;
@@ -192,107 +227,108 @@ class ChatBot extends Component {
     return steps;
   }
 
-  triggerNextStep(data) {
-    const { enableMobileAutoFocus } = this.props;
-    const {
-      defaultUserSettings,
-      previousSteps,
-      renderedSteps,
-      steps,
-    } = this.state;
-    let { currentStep, previousStep } = this.state;
-    const isEnd = currentStep.end;
+  // triggerNextStep(data) {
+  //   console.log('where are you being called')
+  //   const { enableMobileAutoFocus } = this.props;
+  //   const {
+  //     defaultUserSettings,
+  //     previousSteps,
+  //     renderedSteps,
+  //     steps,
+  //   } = this.state;
+  //   let { currentStep, previousStep } = this.state;
+  //   const isEnd = currentStep.end;
 
-    if (data && data.value) {
-      currentStep.value = data.value;
-    }
-    if (data && data.hideInput) {
-      currentStep.hideInput = data.hideInput;
-    }
-    if (data && data.trigger) {
-      currentStep.trigger = this.getTriggeredStep(data.trigger, data.value);
-    }
+  //   if (data && data.value) {
+  //     currentStep.value = data.value;
+  //   }
+  //   if (data && data.hideInput) {
+  //     currentStep.hideInput = data.hideInput;
+  //   }
+  //   if (data && data.trigger) {
+  //     currentStep.trigger = this.getTriggeredStep(data.trigger, data.value);
+  //   }
 
-    if (isEnd) {
-      this.handleEnd();
-    } else if (currentStep.options && data) {
-      const option = currentStep.options.filter(o => o.value === data.value)[0];
-      const trigger = this.getTriggeredStep(option.trigger, currentStep.value);
-      delete currentStep.options;
+  //   if (isEnd) {
+  //     this.handleEnd();
+  //   } else if (currentStep.options && data) {
+  //     const option = currentStep.options.filter(o => o.value === data.value)[0];
+  //     const trigger = this.getTriggeredStep(option.trigger, currentStep.value);
+  //     delete currentStep.options;
 
-      // replace choose option for user message
-      currentStep = Object.assign({}, currentStep, option, defaultUserSettings, {
-        user: true,
-        message: option.label,
-        trigger,
-      });
+  //     // replace choose option for user message
+  //     currentStep = Object.assign({}, currentStep, option, defaultUserSettings, {
+  //       user: true,
+  //       message: option.label,
+  //       trigger,
+  //     });
 
-      renderedSteps.pop();
-      previousSteps.pop();
-      renderedSteps.push(currentStep);
-      previousSteps.push(currentStep);
+  //     renderedSteps.pop();
+  //     previousSteps.pop();
+  //     renderedSteps.push(currentStep);
+  //     previousSteps.push(currentStep);
 
-      this.setState({
-        currentStep,
-        renderedSteps,
-        previousSteps,
-      });
-    } else if (currentStep.trigger) {
-      if (currentStep.replace) {
-        renderedSteps.pop();
-      }
+  //     this.setState({
+  //       currentStep,
+  //       renderedSteps,
+  //       previousSteps,
+  //     });
+  //   } else if (currentStep.trigger) {
+  //     if (currentStep.replace) {
+  //       renderedSteps.pop();
+  //     }
 
-      const trigger = this.getTriggeredStep(currentStep.trigger, currentStep.value);
-      let nextStep = Object.assign({}, steps[trigger]);
+  //     const trigger = this.getTriggeredStep(currentStep.trigger, currentStep.value);
+  //     let nextStep = Object.assign({}, steps[trigger]);
 
-      if (nextStep.message) {
-        nextStep.message = this.getStepMessage(nextStep.message);
-      } else if (nextStep.update) {
-        const updateStep = nextStep;
-        nextStep = Object.assign({}, steps[updateStep.update]);
+  //     if (nextStep.message) {
+  //       nextStep.message = this.getStepMessage(nextStep.message);
+  //     } else if (nextStep.update) {
+  //       const updateStep = nextStep;
+  //       nextStep = Object.assign({}, steps[updateStep.update]);
 
-        if (nextStep.options) {
-          for (let i = 0, len = nextStep.options.length; i < len; i += 1) {
-            nextStep.options[i].trigger = updateStep.trigger;
-          }
-        } else {
-          nextStep.trigger = updateStep.trigger;
-        }
-      }
+  //       if (nextStep.options) {
+  //         for (let i = 0, len = nextStep.options.length; i < len; i += 1) {
+  //           nextStep.options[i].trigger = updateStep.trigger;
+  //         }
+  //       } else {
+  //         nextStep.trigger = updateStep.trigger;
+  //       }
+  //     }
 
-      nextStep.key = Random(24);
+  //     nextStep.key = Random(24);
 
-      previousStep = currentStep;
-      currentStep = nextStep;
+  //     previousStep = currentStep;
+  //     currentStep = nextStep;
 
-      this.setState({ renderedSteps, currentStep, previousStep }, () => {
-        if (nextStep.user) {
-          this.setState({ disabled: false }, () => {
-            if (enableMobileAutoFocus || !isMobile()) {
-              this.input.focus();
-            }
-          });
-        } else {
-          renderedSteps.push(nextStep);
-          previousSteps.push(nextStep);
+  //     this.setState({ renderedSteps, currentStep, previousStep }, () => {
+  //       if (nextStep.user) {
+  //         this.setState({ disabled: false }, () => {
+  //           if (enableMobileAutoFocus || !isMobile()) {
+  //             this.input.focus();
+  //           }
+  //         });
+  //       } else {
+  //         renderedSteps.push(nextStep);
+  //         previousSteps.push(nextStep);
 
-          this.setState({ renderedSteps, previousSteps });
-        }
-      });
-    }
+  //         this.setState({ renderedSteps, previousSteps });
+  //       }
+  //     });
+  //   }
 
-    const { cache, cacheName } = this.props;
-    if (cache) {
-      setTimeout(() => {
-        storage.setData(cacheName, {
-          currentStep,
-          previousStep,
-          previousSteps,
-          renderedSteps,
-        });
-      }, 300);
-    }
-  }
+  //   const { cache, cacheName } = this.props;
+  //   if (cache) {
+  //     setTimeout(() => {
+  //       storage.setData(cacheName, {
+  //         currentStep,
+  //         previousStep,
+  //         previousSteps,
+  //         renderedSteps,
+  //       });
+  //     }, 300);
+  //   }
+  // }
 
   handleEnd() {
   }
@@ -389,7 +425,7 @@ class ChatBot extends Component {
       console.log(result.data);
       let response = result.data.result.fulfillment.messages[0].displayText || result.data.result.fulfillment.speech;
       let message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
-            
+
       this.state.renderedSteps.push(message);
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
@@ -451,7 +487,7 @@ class ChatBot extends Component {
         steps={steps}
         previousStep={previousStep}
         previousValue={previousStep.value}
-        triggerNextStep={this.triggerNextStep}
+        // triggerNextStep={this.triggerNextStep}
         avatarStyle={avatarStyle}
         bubbleStyle={bubbleStyle}
         hideBotAvatar={hideBotAvatar}

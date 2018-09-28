@@ -25,7 +25,7 @@ class TextStep extends Component {
     setTimeout(() => {
       this.setState({ loading: false }, () => {
         if (!isComponentWatingUser && !step.rendered) {
-          this.props.triggerNextStep();
+          // this.props.triggerNextStep();
         }
       });
     }, delay);
