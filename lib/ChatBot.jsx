@@ -142,19 +142,6 @@ class ChatBot extends Component {
     window.addEventListener('resize', this.onResize);
   }
 
-  componentWillUpdate(nextProps, nextState) {
-    const { opened } = nextProps;
-
-    if (opened !== undefined && opened !== nextState.opened) {
-      this.setState({ opened });
-    }
-  }
-
-  componentWillUnmount() {
-    this.content.removeEventListener('DOMNodeInserted', this.onNodeInserted);
-    window.removeEventListener('resize', this.onResize);
-  }
-
   onNodeInserted(event) {
     event.currentTarget.scrollTop = event.currentTarget.scrollHeight;
   }
@@ -185,13 +172,13 @@ class ChatBot extends Component {
     return typeof trigger === 'function' ? trigger({ value, steps }) : trigger;
   }
 
-  getStepMessage(message) {
-    const { previousSteps } = this.state;
-    const lastStepIndex = previousSteps.length > 0 ? previousSteps.length - 1 : 0;
-    const steps = this.generateRenderedStepsById();
-    const previousValue = previousSteps[lastStepIndex].value;
-    return typeof message === 'function' ? message({ previousValue, steps }) : message;
-  }
+  // getStepMessage(message) {
+  //   const { previousSteps } = this.state;
+  //   const lastStepIndex = previousSteps.length > 0 ? previousSteps.length - 1 : 0;
+  //   const steps = this.generateRenderedStepsById();
+  //   const previousValue = previousSteps[lastStepIndex].value;
+  //   return typeof message === 'function' ? message({ previousValue, steps }) : message;
+  // }
 
   generateRenderedStepsById() {
     const { previousSteps } = this.state;
@@ -308,45 +295,9 @@ class ChatBot extends Component {
   }
 
   handleEnd() {
-    if (this.props.handleEnd) {
-      const { previousSteps } = this.state;
-
-      const renderedSteps = previousSteps.map((step) => {
-        const { id, message, value, metadata } = step;
-        return { id, message, value, metadata };
-      });
-
-      const steps = [];
-
-      for (let i = 0, len = previousSteps.length; i < len; i += 1) {
-        const { id, message, value, metadata } = previousSteps[i];
-        steps[id] = { id, message, value, metadata };
-      }
-
-      const values = previousSteps.filter(step => step.value).map(step => step.value);
-
-      this.props.handleEnd({ renderedSteps, steps, values });
-    }
   }
 
   isLastPosition(step) {
-    const { renderedSteps } = this.state;
-    const length = renderedSteps.length;
-    const stepIndex = renderedSteps.map(s => s.key).indexOf(step.key);
-
-    if (length <= 1 || stepIndex + 1 === length) {
-      return true;
-    }
-
-    const nextStep = renderedSteps[stepIndex + 1];
-    const hasMessage = nextStep.message || nextStep.asMessage;
-
-    if (!hasMessage) {
-      return true;
-    }
-
-    const isLast = step.user !== nextStep.user;
-    return isLast;
   }
 
   isFirstPosition(step) {
@@ -375,15 +326,6 @@ class ChatBot extends Component {
   }
 
   handleSubmitButton() {
-    const { inputValue, speaking, recognitionEnable } = this.state;
-    if ((_.isEmpty(inputValue) || speaking) && recognitionEnable) {
-      this.recognition.speak();
-      if (!speaking) {
-        this.setState({ speaking: true });
-      }
-      return;
-    }
-    this.submitUserMessage();
   }
 
   submitUserMessage() {
@@ -402,7 +344,6 @@ class ChatBot extends Component {
 
       renderedSteps.push(currentStep);
       previousSteps.push(currentStep);
-      console.log(this.state);
       this.setState({
         currentStep,
         renderedSteps,
@@ -448,46 +389,13 @@ class ChatBot extends Component {
       console.log(result.data);
       let response = result.data.result.fulfillment.messages[0].displayText || result.data.result.fulfillment.speech;
       let message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
-      
-      // console.log("result", result);
-      
+            
       this.state.renderedSteps.push(message);
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
     catch (err) {
       console.log("err", err);
     }
-  }
-
-  checkInvalidInput() {
-    const { enableMobileAutoFocus } = this.props;
-    const { currentStep, inputValue } = this.state;
-    const result = currentStep.validator(inputValue);
-    const value = inputValue;
-
-    if (typeof result !== 'boolean' || !result) {
-      this.setState({
-        inputValue: result.toString(),
-        inputInvalid: true,
-        disabled: true,
-      }, () => {
-        setTimeout(() => {
-          this.setState({
-            inputValue: value,
-            inputInvalid: false,
-            disabled: false,
-          }, () => {
-            if (enableMobileAutoFocus || !isMobile()) {
-              this.input.focus();
-            }
-          });
-        }, 2000);
-      });
-
-      return true;
-    }
-
-    return false;
   }
 
   toggleChatBot(opened) {
