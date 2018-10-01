@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Loading from '../common/Loading';
 import CustomStepContainer from './CustomStepContainer';
+import {ListCard} from './ListCard'
 
 class CustomStep extends Component {
   /* istanbul ignore next */
@@ -21,22 +22,25 @@ class CustomStep extends Component {
 
     setTimeout(() => {
       this.setState({ loading: false }, () => {
-        if (!waitAction && !step.rendered) {
-          this.props.triggerNextStep();
-        }
+      
       });
     }, delay);
   }
 
   renderComponent() {
-    const { step, steps, previousStep, triggerNextStep } = this.props;
+    const { step, steps, previousStep} = this.props;
     const { component } = step;
-    return React.cloneElement(component, {
+    console.log("component", component);
+    console.log(this.props);
+    let cloned = React.cloneElement(component, {
       step,
       steps,
-      previousStep,
-      triggerNextStep,
+      previousStep
     });
+
+    console.log(cloned);
+
+    return cloned;
   }
 
   render() {
@@ -59,11 +63,10 @@ class CustomStep extends Component {
 }
 
 CustomStep.propTypes = {
-  step: PropTypes.object.isRequired,
-  steps: PropTypes.object.isRequired,
-  style: PropTypes.object.isRequired,
-  previousStep: PropTypes.object.isRequired,
-  triggerNextStep: PropTypes.func.isRequired,
+  // step: PropTypes.object.isRequired,
+  // steps: PropTypes.object.isRequired,
+  // style: PropTypes.object.isRequired,
+  // previousStep: PropTypes.object.isRequired,
 };
 
 export default CustomStep;
