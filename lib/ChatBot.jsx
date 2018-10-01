@@ -20,7 +20,8 @@ import {
 import Recognition from './recognition';
 import { ChatIcon, CloseIcon, SubmitIcon, MicIcon } from './icons';
 import { isMobile } from './utils';
-import ListCard  from './steps_components/custom/ListCard';
+import BasicCard from './steps_components/custom/BasicCard';
+import MediaCard from './steps_components/custom/MediaCard';
 
 
 class ChatBot extends Component {
@@ -69,7 +70,6 @@ class ChatBot extends Component {
       userDelay,
     } = this.props;
     const steps = {};
-    console.log("listCard",ListCard)
     const defaultBotSettings = { delay: botDelay, avatar: botAvatar };
     const defaultUserSettings = { delay: userDelay, avatar: userAvatar };
     let config = this.createDialogFlowRequest("welcome");
@@ -291,31 +291,50 @@ class ChatBot extends Component {
     let { message } = currentStep;
     let config = this.createDialogFlowRequest(message);
 
-    let template = <div></div>
+
 
     try {
       let result = await axios(config);
-      console.log(result.data.result)
+
       let { fulfillment } = result.data.result;
       let message;
+
+      // if messages are > 1, we are getting more than text back and need to use custom component
       if (fulfillment.messages.length > 1) {
+        
+        // Loop through all messages to see what kind of component we have to create
         for (let i = 0; i < fulfillment.messages.length; i++) {
           let msg = fulfillment.messages[i];
           if (msg.type === "basic_card") {
-            message = Object.assign({}, this.state.renderedSteps[0], { component: <ListCard />})
+            message = Object.assign({}, this.state.renderedSteps[0], { component: <BasicCard card={msg} /> })
             break;
           }
+
+          if (msg.type === "media_content") {
+            message = Object.assign({}, this.state.renderedSteps[0], { component: <MediaCard messages={fulfillment.messages} /> })
+            break;
+          }
+
         }
+
+        //if messages are all simple text, handle with simple text response
+        if (!message) {
+          let response = fulfillment.messages[0].displayText || fulfillment.speech;
+          message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
+        }
+
       } else {
+        // if there are no messages, just render a text resposne
         let response = fulfillment.messages[0].displayText || fulfillment.speech;
         message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
       }
+
       this.state.renderedSteps.push(message);
 
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
     catch (err) {
-      console.log("err", err);
+      console.log("Error getBotResponse", err);
     }
   }
 
@@ -529,7 +548,6 @@ ChatBot.propTypes = {
   recognitionEnable: PropTypes.bool,
   recognitionLang: PropTypes.string,
   recognitionPlaceholder: PropTypes.string,
-  // steps: PropTypes.array.isRequired,
   style: PropTypes.object,
   submitButtonStyle: PropTypes.object,
   userAvatar: PropTypes.string,
