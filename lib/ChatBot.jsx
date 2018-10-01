@@ -20,6 +20,7 @@ import {
 import Recognition from './recognition';
 import { ChatIcon, CloseIcon, SubmitIcon, MicIcon } from './icons';
 import { isMobile } from './utils';
+import { utimes } from 'fs';
 
 class ChatBot extends Component {
   /* istanbul ignore next */
@@ -303,7 +304,19 @@ class ChatBot extends Component {
       let result = await axios(config);
       let response = result.data.result.fulfillment.messages[0].displayText || result.data.result.fulfillment.speech;
       let message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
-      this.state.renderedSteps.push(message);
+
+      if (result.data.result.fulfillment.messages.length > 1) {
+        let listItems = result.data.result.fulfillment.messages[1].items; //listcard send
+        // console.log('LIST ITEMS ARE HERE ', listItems);
+        this.state.renderedSteps.push(message);
+        listItems.forEach(item => {
+          // let newItem = Object.assign({}, this.state.renderedSteps[0], { message: item.description, value: item.description })
+          // this.renderStep({ component: (<button>{item.description}</button>) })
+          // this.state.renderedSteps.push(newItem);
+        })
+      }
+      console.log("result", result);
+      
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
     catch (err) {
