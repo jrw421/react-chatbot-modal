@@ -152,6 +152,8 @@ class ChatBot extends Component {
       });
     });
 
+    console.log("mount",  defaultBotSettings)
+
     this.setState({
       currentStep,
       defaultUserSettings,
@@ -376,8 +378,15 @@ class ChatBot extends Component {
         value: inputValue,
       };
 
+      console.log("user", defaultUserSettings)
+      console.log("before", currentStep);
       currentStep = Object.assign({}, defaultUserSettings, currentStep, step);
-
+      console.log("after", currentStep)
+      // currentStep = Object.assign({}, currentStep, defaultUserSettings, {
+      //   user: true,
+      //   message: option.label,
+      //   trigger,
+      // });
       renderedSteps.push(currentStep);
       previousSteps.push(currentStep);
       this.setState({
@@ -388,7 +397,7 @@ class ChatBot extends Component {
         inputValue: '',
       }, () => {
         this.input.blur();
-        this.getBotResponseFromServer(currentStep);
+        setTimeout(() => this.getBotResponseFromServer(currentStep), 1000);
       });
     }
   }
@@ -422,10 +431,8 @@ class ChatBot extends Component {
 
     try {
       let result = await axios(config);
-      console.log(result.data);
       let response = result.data.result.fulfillment.messages[0].displayText || result.data.result.fulfillment.speech;
       let message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
-
       this.state.renderedSteps.push(message);
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
@@ -464,7 +471,6 @@ class ChatBot extends Component {
           steps={steps}
           style={customStyle}
           previousStep={previousStep}
-          triggerNextStep={this.triggerNextStep}
         />
       );
     }
@@ -474,7 +480,6 @@ class ChatBot extends Component {
         <OptionsStep
           key={index}
           step={step}
-          triggerNextStep={this.triggerNextStep}
           bubbleOptionStyle={bubbleOptionStyle}
         />
       );
@@ -487,7 +492,6 @@ class ChatBot extends Component {
         steps={steps}
         previousStep={previousStep}
         previousValue={previousStep.value}
-        // triggerNextStep={this.triggerNextStep}
         avatarStyle={avatarStyle}
         bubbleStyle={bubbleStyle}
         hideBotAvatar={hideBotAvatar}

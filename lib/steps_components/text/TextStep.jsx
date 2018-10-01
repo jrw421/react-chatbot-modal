@@ -115,9 +115,9 @@ class TextStep extends Component {
 
 TextStep.propTypes = {
   isFirst: PropTypes.bool.isRequired,
-  isLast: PropTypes.bool.isRequired,
+  // isLast: PropTypes.bool.isRequired,
   step: PropTypes.object.isRequired,
-  triggerNextStep: PropTypes.func.isRequired,
+  // triggerNextStep: PropTypes.func.isRequired,
   avatarStyle: PropTypes.object.isRequired,
   bubbleStyle: PropTypes.object.isRequired,
   hideBotAvatar: PropTypes.bool.isRequired,
