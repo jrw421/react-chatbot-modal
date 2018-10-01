@@ -72,7 +72,6 @@ class TextStep extends Component {
     } = step;
 
     const showAvatar = user ? !hideUserAvatar : !hideBotAvatar;
-
     return (
       <TextStepContainer
         className="rsc-ts"

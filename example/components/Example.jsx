@@ -25,7 +25,7 @@ const steps = [
 
 const ThemedExample = () => (
   <ThemeProvider theme={otherFontTheme}>
-    <ChatBot steps={steps} />
+    <ChatBot dfClientToken="d91096f647be47489a2884294259935b" />
   </ThemeProvider>
 );
 
