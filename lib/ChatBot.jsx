@@ -322,7 +322,6 @@ class ChatBot extends Component {
             listItems.forEach(item => {
             message = Object.assign({}, this.state.renderedSteps[0], { component: 
             // (<ListCard description={item.description} listDescription={this.listDescription} />)
-            // <ListCard description={item.description} submitUserMessage={this.submitUserMessage} />
             (<button onClick={() => {this.listDescription(item.description)}}>
                 {item.description}</button>)
             })
