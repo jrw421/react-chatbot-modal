@@ -274,35 +274,38 @@ class ChatBot extends Component {
 
   async getBotResponseFromServer(currentStep) {
     let { message } = currentStep;
-    const url = "https://api.dialogflow.com/v1/query?v=20150910";
-    const clientToken = "d91096f647be47489a2884294259935b";
-    let config = {
-      method: 'post',
-      url: url,
-      data: null,
-      headers: {
-        Authorization: `Bearer ${clientToken}`,
-        'content-type': 'application/json',
+    let config = this.createDialogFlowRequest(message);
+     
+    // let template = <div></div>
+        try {
+          let result = await axios(config);
+          console.log(result.data.result)
+          let { fulfillment } = result.data.result;
+          let message;
+          if (fulfillment.messages.length > 1) {
+            for (let i = 0; i < fulfillment.messages.length; i++) {
+            let msg = fulfillment.messages[i];
+          if (msg.type === "basic_card") {
+            message = Object.assign({}, this.state.renderedSteps[0], { component: <ListCard />})
+            break;
+          }
+          if (msg.type === "list_card") {
+            let listItems = result.data.result.fulfillment.messages[1].items; //listcard send
+            // console.log('LIST ITEMS ARE HERE ', listItems);
+            listItems.forEach(item => {
+              console.log('what is item ', item)
+              // let newItem = Object.assign({}, this.state.renderedSteps[0], { message: item.description, value: item.description })
+              // this.renderStep(step);
+              // this.state.renderedSteps.push(newItem);
+              message = Object.assign({}, this.state.renderedSteps[0], { component: <button>{item.description}</button> })
+            })
+            // break;
+        }
       }
+    } else {
+      let response = fulfillment.messages[0].displayText || fulfillment.speech;
+      message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
     }
-
-    let dialogflowOptions = {
-      lang: 'en',
-      sessionId: this.state.sessionId,
-      query: null,
-    }
-
-    dialogflowOptions.originalRequest = { data: {} };
-    dialogflowOptions.originalRequest.data = { user: {} };
-    dialogflowOptions.originalRequest.data.user.accessToken = "";
-
-    config.data = dialogflowOptions;
-    config.data.query = message;
-
-    try {
-      let result = await axios(config);
-      let response = result.data.result.fulfillment.messages[0].displayText || result.data.result.fulfillment.speech;
-      let message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
       this.state.renderedSteps.push(message);
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
