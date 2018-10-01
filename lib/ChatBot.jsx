@@ -20,6 +20,9 @@ import {
 import Recognition from './recognition';
 import { ChatIcon, CloseIcon, SubmitIcon, MicIcon } from './icons';
 import { isMobile } from './utils';
+import ListCard  from './steps_components/custom/ListCard';
+import BasicCard from './steps_components/custom/BasicCard';
+
 
 class ChatBot extends Component {
   /* istanbul ignore next */
@@ -53,6 +56,7 @@ class ChatBot extends Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.handleSubmitButton = this.handleSubmitButton.bind(this);
     this.getBotResponseFromServer = this.getBotResponseFromServer.bind(this);
+    this.listDescription = this.listDescription.bind(this);
   }
 
   async componentWillMount() {
@@ -67,34 +71,10 @@ class ChatBot extends Component {
       userDelay,
     } = this.props;
     const steps = {};
-
     const defaultBotSettings = { delay: botDelay, avatar: botAvatar };
     const defaultUserSettings = { delay: userDelay, avatar: userAvatar };
-    // const defaultCustomSettings = { delay: customDelay };
+    let config = this.createDialogFlowRequest("welcome");
 
-    const url = "https://api.dialogflow.com/v1/query?v=20150910";
-    const clientToken = this.props.dfClientToken;
-    let config = {
-      method: 'post',
-      url: url,
-      data: null,
-      headers: {
-        Authorization: `Bearer ${clientToken}`,
-        'content-type': 'application/json',
-      }
-    }
-
-    let dialogflowOptions = {
-      lang: 'en',
-      sessionId: this.state.sessionId,
-    }
-
-    dialogflowOptions.originalRequest = { data: {} };
-    dialogflowOptions.originalRequest.data = { user: {} };
-    dialogflowOptions.originalRequest.data.user.accessToken = "";
-
-    config.data = dialogflowOptions;
-    config.data.event = { name: "welcome" };
     let response;
     try {
       response = await axios(config);
@@ -154,6 +134,41 @@ class ChatBot extends Component {
       steps,
     });
   }
+
+
+  createDialogFlowRequest(message) {
+    const url = "https://api.dialogflow.com/v1/query?v=20150910";
+    const clientToken = this.props.dfClientToken;
+    let config = {
+      method: 'post',
+      url: url,
+      data: null,
+      headers: {
+        Authorization: `Bearer ${clientToken}`,
+        'content-type': 'application/json',
+      }
+    }
+
+    let dialogflowOptions = {
+      lang: 'en',
+      sessionId: this.state.sessionId,
+    }
+
+    dialogflowOptions.originalRequest = { data: {} };
+    dialogflowOptions.originalRequest.data = { user: {} };
+    dialogflowOptions.originalRequest.data.user.accessToken = "";
+
+    config.data = dialogflowOptions;
+
+    if (message === "welcome") {
+      config.data.event = { name: "welcome" };
+    } else {
+      config.data.query = message;
+    }
+
+    return config;
+  }
+
 
   componentDidMount() {
     const { recognitionEnable } = this.state;
@@ -239,6 +254,15 @@ class ChatBot extends Component {
   }
 
   handleSubmitButton() {
+    const { inputValue, speaking, recognitionEnable } = this.state;
+    if ((_.isEmpty(inputValue) || speaking) && recognitionEnable) {
+      this.recognition.speak();
+      if (!speaking) {
+        this.setState({ speaking: true });
+      }
+      return;
+    }
+    this.submitUserMessage();
   }
 
   submitUserMessage() {
@@ -256,9 +280,10 @@ class ChatBot extends Component {
       const userSettings = { delay: 1000, avatar: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgLTIwOC41IDIxIDEwMCAxMDAiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9Ii0yMDguNSAyMSAxMDAgMTAwIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGc+PGNpcmNsZSBjeD0iLTE1OC41IiBjeT0iNzEiIGZpbGw9IiNGNUVFRTUiIGlkPSJNYXNrIiByPSI1MCIvPjxnPjxkZWZzPjxjaXJjbGUgY3g9Ii0xNTguNSIgY3k9IjcxIiBpZD0iTWFza18yXyIgcj0iNTAiLz48L2RlZnM+PGNsaXBQYXRoIGlkPSJNYXNrXzRfIj48dXNlIG92ZXJmbG93PSJ2aXNpYmxlIiB4bGluazpocmVmPSIjTWFza18yXyIvPjwvY2xpcFBhdGg+PHBhdGggY2xpcC1wYXRoPSJ1cmwoI01hc2tfNF8pIiBkPSJNLTEwOC41LDEyMXYtMTRjMCwwLTIxLjItNC45LTI4LTYuN2MtMi41LTAuNy03LTMuMy03LTEyICAgICBjMC0xLjcsMC02LjMsMC02LjNoLTE1aC0xNWMwLDAsMCw0LjYsMCw2LjNjMCw4LjctNC41LDExLjMtNywxMmMtNi44LDEuOS0yOC4xLDcuMy0yOC4xLDYuN3YxNGg1MC4xSC0xMDguNXoiIGZpbGw9IiNFNkMxOUMiIGlkPSJNYXNrXzNfIi8+PGcgY2xpcC1wYXRoPSJ1cmwoI01hc2tfNF8pIj48ZGVmcz48cGF0aCBkPSJNLTEwOC41LDEyMXYtMTRjMCwwLTIxLjItNC45LTI4LTYuN2MtMi41LTAuNy03LTMuMy03LTEyYzAtMS43LDAtNi4zLDAtNi4zaC0xNWgtMTVjMCwwLDAsNC42LDAsNi4zICAgICAgIGMwLDguNy00LjUsMTEuMy03LDEyYy02LjgsMS45LTI4LjEsNy4zLTI4LjEsNi43djE0aDUwLjFILTEwOC41eiIgaWQ9Ik1hc2tfMV8iLz48L2RlZnM+PGNsaXBQYXRoIGlkPSJNYXNrXzVfIj48dXNlIG92ZXJmbG93PSJ2aXNpYmxlIiB4bGluazpocmVmPSIjTWFza18xXyIvPjwvY2xpcFBhdGg+PHBhdGggY2xpcC1wYXRoPSJ1cmwoI01hc2tfNV8pIiBkPSJNLTE1OC41LDEwMC4xYzEyLjcsMCwyMy0xOC42LDIzLTM0LjQgICAgICBjMC0xNi4yLTEwLjMtMjQuNy0yMy0yNC43cy0yMyw4LjUtMjMsMjQuN0MtMTgxLjUsODEuNS0xNzEuMiwxMDAuMS0xNTguNSwxMDAuMXoiIGZpbGw9IiNENEIwOEMiIGlkPSJoZWFkLXNoYWRvdyIvPjwvZz48L2c+PHBhdGggZD0iTS0xNTguNSw5NmMxMi43LDAsMjMtMTYuMywyMy0zMWMwLTE1LjEtMTAuMy0yMy0yMy0yM3MtMjMsNy45LTIzLDIzICAgIEMtMTgxLjUsNzkuNy0xNzEuMiw5Ni0xNTguNSw5NnoiIGZpbGw9IiNGMkNFQTUiIGlkPSJoZWFkIi8+PC9nPjwvc3ZnPg==' }
 
       currentStep = Object.assign({}, userSettings, step)
-      currentStep.user = {name: "Jon"}
+      currentStep.user = {}
       renderedSteps.push(currentStep);
       previousSteps.push(currentStep);
+
       this.setState({
         currentStep,
         renderedSteps,
@@ -275,31 +300,30 @@ class ChatBot extends Component {
   async getBotResponseFromServer(currentStep) {
     let { message } = currentStep;
     let config = this.createDialogFlowRequest(message);
-     
-    // let template = <div></div>
-        try {
-          let result = await axios(config);
-          console.log(result.data.result)
-          let { fulfillment } = result.data.result;
-          let message;
-          if (fulfillment.messages.length > 1) {
-            for (let i = 0; i < fulfillment.messages.length; i++) {
-            let msg = fulfillment.messages[i];
+
+    try {
+      let result = await axios(config);
+      let { fulfillment } = result.data.result;
+      let message;
+      if (fulfillment.messages.length > 1) {
+        for (let i = 0; i < fulfillment.messages.length; i++) {
+          let msg = fulfillment.messages[i];
           if (msg.type === "basic_card") {
-            message = Object.assign({}, this.state.renderedSteps[0], { component: <ListCard />})
+            message = Object.assign({}, this.state.renderedSteps[0], { component: <BasicCard />})
             break;
           }
           if (msg.type === "list_card") {
-            let listItems = result.data.result.fulfillment.messages[1].items; //listcard send
-            // console.log('LIST ITEMS ARE HERE ', listItems);
+            let listItems = msg.items; 
             listItems.forEach(item => {
-              console.log('what is item ', item)
-              // let newItem = Object.assign({}, this.state.renderedSteps[0], { message: item.description, value: item.description })
-              // this.renderStep(step);
-              // this.state.renderedSteps.push(newItem);
-              message = Object.assign({}, this.state.renderedSteps[0], { component: <button>{item.description}</button> })
+            message = Object.assign({}, this.state.renderedSteps[0], { component: 
+            // (<ListCard description={item.description} listDescription={this.listDescription} />)
+            // <ListCard description={item.description} submitUserMessage={this.submitUserMessage} />
+            (<button onClick={() => {this.listDescription(item)}}>
+                {item.description}</button>)
             })
-            // break;
+              this.state.renderedSteps.push(message);
+            })
+            break;
         }
       }
     } else {
@@ -307,11 +331,18 @@ class ChatBot extends Component {
       message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
     }
       this.state.renderedSteps.push(message);
+
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
     catch (err) {
       console.log("err", err);
     }
+  } 
+
+  listDescription(item) {
+    this.setState({
+      inputValue: item.description,
+    }, () => this.handleSubmitButton());
   }
 
   toggleChatBot(opened) {
@@ -370,7 +401,6 @@ class ChatBot extends Component {
         hideBotAvatar={hideBotAvatar}
         hideUserAvatar={hideUserAvatar}
         isFirst={this.isFirstPosition(step)}
-        // isLast={this.isLastPosition(step)}
       />
     );
   }
@@ -525,7 +555,7 @@ ChatBot.propTypes = {
   recognitionEnable: PropTypes.bool,
   recognitionLang: PropTypes.string,
   recognitionPlaceholder: PropTypes.string,
-  steps: PropTypes.array.isRequired,
+  // steps: PropTypes.array.isRequired,
   style: PropTypes.object,
   submitButtonStyle: PropTypes.object,
   userAvatar: PropTypes.string,
