@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Loading from '../common/Loading';
 import CustomStepContainer from './CustomStepContainer';
-import {ListCard} from './BasicCard'
+import {BasicCard} from './BasicCard'
 
 class CustomStep extends Component {
   /* istanbul ignore next */
@@ -30,15 +30,15 @@ class CustomStep extends Component {
   renderComponent() {
     const { step, steps, previousStep} = this.props;
     const { component } = step;
-    console.log("component", component);
-    console.log(this.props);
+    
+
     let cloned = React.cloneElement(component, {
+      // componentProps: component.props,
       step,
       steps,
       previousStep
     });
 
-    console.log(cloned);
 
     return cloned;
   }

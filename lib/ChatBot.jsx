@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Random from 'random-id';
 import { CustomStep, OptionsStep, TextStep } from './steps_components';
 import schema from './schemas/schema';
 import * as storage from './storage';
@@ -20,10 +19,8 @@ import {
 import Recognition from './recognition';
 import { ChatIcon, CloseIcon, SubmitIcon, MicIcon } from './icons';
 import { isMobile } from './utils';
-import ListCard  from './steps_components/custom/ListCard';
 import BasicCard from './steps_components/custom/BasicCard';
-
-import { utimes } from 'fs';
+import MediaCard from './steps_components/custom/MediaCard';
 
 class ChatBot extends Component {
   /* istanbul ignore next */
@@ -41,7 +38,7 @@ class ChatBot extends Component {
       inputValue: '',
       inputInvalid: false,
       speaking: false,
-      recognitionEnable: props.recognitionEnable && Recognition.isSupported(),
+      recognitionEnable: true && Recognition.isSupported(),
       defaultUserSettings: {},
       sessionId: Date.now()
     };
@@ -302,15 +299,22 @@ class ChatBot extends Component {
     let { message } = currentStep;
     let config = this.createDialogFlowRequest(message);
 
+
+
     try {
       let result = await axios(config);
+
       let { fulfillment } = result.data.result;
       let message;
+
+      // if messages are > 1, we are getting more than text back and need to use custom component
       if (fulfillment.messages.length > 1) {
+        
+        // Loop through all messages to see what kind of component we have to create
         for (let i = 0; i < fulfillment.messages.length; i++) {
           let msg = fulfillment.messages[i];
           if (msg.type === "basic_card") {
-            message = Object.assign({}, this.state.renderedSteps[0], { component: <BasicCard />})
+            message = Object.assign({}, this.state.renderedSteps[0], { component: <BasicCard card={msg}/>})
             break;
           }
           if (msg.type === "list_card") {
@@ -319,30 +323,42 @@ class ChatBot extends Component {
             message = Object.assign({}, this.state.renderedSteps[0], { component: 
             // (<ListCard description={item.description} listDescription={this.listDescription} />)
             // <ListCard description={item.description} submitUserMessage={this.submitUserMessage} />
-            (<button onClick={() => {this.listDescription(item)}}>
+            (<button onClick={() => {this.listDescription(item.description)}}>
                 {item.description}</button>)
             })
               this.state.renderedSteps.push(message);
             })
             break;
+          }
+          if (msg.type === "media_content") {
+            message = Object.assign({}, this.state.renderedSteps[0], { component: <MediaCard messages={fulfillment.messages} listDescription={this.listDescription}/> })
+            break;
+          }
+          //if messages are all simple text, handle with simple text response
+          if (!message) {
+            let response = fulfillment.messages[0].displayText || fulfillment.speech;
+            message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
+          }
         }
+
+      } else {
+        // if there are no messages, just render a text resposne
+        let response = fulfillment.messages[0].displayText || fulfillment.speech;
+        message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
       }
-    } else {
-      let response = fulfillment.messages[0].displayText || fulfillment.speech;
-      message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response })
-    }
+
       this.state.renderedSteps.push(message);
 
       this.setState({ renderedSteps: this.state.renderedSteps });
     }
     catch (err) {
-      console.log("err", err);
+      console.log("Error getBotResponse", err);
     }
   } 
 
   listDescription(item) {
     this.setState({
-      inputValue: item.description,
+      inputValue: item,
     }, () => this.handleSubmitButton());
   }
 
@@ -556,7 +572,6 @@ ChatBot.propTypes = {
   recognitionEnable: PropTypes.bool,
   recognitionLang: PropTypes.string,
   recognitionPlaceholder: PropTypes.string,
-  // steps: PropTypes.array.isRequired,
   style: PropTypes.object,
   submitButtonStyle: PropTypes.object,
   userAvatar: PropTypes.string,
