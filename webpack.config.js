@@ -15,7 +15,7 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
   },
-  "target": "web",
+  target: "node",
   plugins: [],
   devtool: 'source-map',
   module: {

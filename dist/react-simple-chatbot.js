@@ -70,7 +70,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/ 	__webpack_require__.p = "dist/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 15);
+/******/ 	return __webpack_require__(__webpack_require__.s = 16);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -86,7 +86,7 @@ module.exports = __WEBPACK_EXTERNAL_MODULE_0__;
 "use strict";
 
 
-var bind = __webpack_require__(10);
+var bind = __webpack_require__(11);
 var isBuffer = __webpack_require__(65);
 
 /*global toString:true*/
@@ -397,7 +397,7 @@ module.exports = {
 
 
 if (true) {
-  module.exports = __webpack_require__(31);
+  module.exports = __webpack_require__(32);
 } else {
   module.exports = require('./cjs/react.development.js');
 }
@@ -433,7 +433,7 @@ if (false) {
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
-  module.exports = __webpack_require__(36)();
+  module.exports = __webpack_require__(37)();
 }
 
 
@@ -570,10 +570,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(11);
+    adapter = __webpack_require__(12);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(11);
+    adapter = __webpack_require__(12);
   }
   return adapter;
 }
@@ -679,6 +679,76 @@ module.exports = arrayMap;
 
 /***/ }),
 /* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BasicCard = function (_Component) {
+  _inherits(BasicCard, _Component);
+
+  function BasicCard() {
+    _classCallCheck(this, BasicCard);
+
+    return _possibleConstructorReturn(this, (BasicCard.__proto__ || Object.getPrototypeOf(BasicCard)).call(this));
+  }
+
+  _createClass(BasicCard, [{
+    key: "render",
+    value: function render() {
+      var card = this.props.card;
+
+      return _react2.default.createElement(
+        "div",
+        null,
+        card.title && _react2.default.createElement(
+          "h5",
+          null,
+          " ",
+          card.title,
+          " "
+        ),
+        card.image && _react2.default.createElement("img", { style: { "width": "200px" }, src: card.image.url }),
+        card.buttons && card.buttons.map(function (button) {
+          return _react2.default.createElement(
+            "a",
+            { key: button.title, href: button.openUrlAction && button.openUrlAction.url, target: "_blank" },
+            _react2.default.createElement(
+              "button",
+              null,
+              button.title
+            )
+          );
+        })
+      );
+    }
+  }]);
+
+  return BasicCard;
+}(_react.Component);
+
+exports.default = BasicCard;
+
+/***/ }),
+/* 10 */
 /***/ (function(module, exports) {
 
 /*!
@@ -868,7 +938,7 @@ this.stringify = stringifyRecursion;
 this.parse = parseRecursion;
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -886,7 +956,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -897,7 +967,7 @@ var settle = __webpack_require__(69);
 var buildURL = __webpack_require__(71);
 var parseHeaders = __webpack_require__(72);
 var isURLSameOrigin = __webpack_require__(73);
-var createError = __webpack_require__(12);
+var createError = __webpack_require__(13);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(74);
 
 module.exports = function xhrAdapter(config) {
@@ -1073,7 +1143,7 @@ module.exports = function xhrAdapter(config) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1098,7 +1168,7 @@ module.exports = function createError(message, config, code, request, response) 
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1110,7 +1180,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1136,7 +1206,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1147,7 +1217,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Loading = undefined;
 
-var _ChatBot = __webpack_require__(16);
+var _ChatBot = __webpack_require__(17);
 
 var _ChatBot2 = _interopRequireDefault(_ChatBot);
 
@@ -1161,7 +1231,7 @@ exports.default = _ChatBot2.default;
 exports.Loading = _Loading2.default;
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1175,7 +1245,7 @@ var _map2 = __webpack_require__(8);
 
 var _map3 = _interopRequireDefault(_map2);
 
-var _isEmpty2 = __webpack_require__(17);
+var _isEmpty2 = __webpack_require__(18);
 
 var _isEmpty3 = _interopRequireDefault(_isEmpty2);
 
@@ -1190,10 +1260,6 @@ var _react2 = _interopRequireDefault(_react);
 var _propTypes = __webpack_require__(3);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
-
-var _randomId = __webpack_require__(40);
-
-var _randomId2 = _interopRequireDefault(_randomId);
 
 var _steps_components = __webpack_require__(41);
 
@@ -1219,7 +1285,13 @@ var _icons = __webpack_require__(94);
 
 var _utils = __webpack_require__(99);
 
-var _fs = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"fs\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+var _BasicCard = __webpack_require__(9);
+
+var _BasicCard2 = _interopRequireDefault(_BasicCard);
+
+var _MediaCard = __webpack_require__(100);
+
+var _MediaCard2 = _interopRequireDefault(_MediaCard);
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -1251,7 +1323,7 @@ var ChatBot = function (_Component) {
       inputValue: '',
       inputInvalid: false,
       speaking: false,
-      recognitionEnable: props.recognitionEnable && _recognition2.default.isSupported(),
+      recognitionEnable: true && _recognition2.default.isSupported(),
       defaultUserSettings: {},
       sessionId: Date.now()
     };
@@ -1267,6 +1339,7 @@ var ChatBot = function (_Component) {
     _this.handleKeyPress = _this.handleKeyPress.bind(_this);
     _this.handleSubmitButton = _this.handleSubmitButton.bind(_this);
     _this.getBotResponseFromServer = _this.getBotResponseFromServer.bind(_this);
+    _this.listDescription = _this.listDescription.bind(_this);
     return _this;
   }
 
@@ -1286,34 +1359,10 @@ var ChatBot = function (_Component) {
           userDelay = _props.userDelay;
 
       var steps = {};
-
       var defaultBotSettings = { delay: botDelay, avatar: botAvatar };
       var defaultUserSettings = { delay: userDelay, avatar: userAvatar };
-      // const defaultCustomSettings = { delay: customDelay };
+      var config = this.createDialogFlowRequest("welcome");
 
-      var url = "https://api.dialogflow.com/v1/query?v=20150910";
-      var clientToken = this.props.dfClientToken;
-      var config = {
-        method: 'post',
-        url: url,
-        data: null,
-        headers: {
-          Authorization: 'Bearer ' + clientToken,
-          'content-type': 'application/json'
-        }
-      };
-
-      var dialogflowOptions = {
-        lang: 'en',
-        sessionId: this.state.sessionId
-      };
-
-      dialogflowOptions.originalRequest = { data: {} };
-      dialogflowOptions.originalRequest.data = { user: {} };
-      dialogflowOptions.originalRequest.data.user.accessToken = "";
-
-      config.data = dialogflowOptions;
-      config.data.event = { name: "welcome" };
       var response = void 0;
       try {
         response = await (0, _axios2.default)(config);
@@ -1367,6 +1416,40 @@ var ChatBot = function (_Component) {
         renderedSteps: renderedSteps,
         steps: steps
       });
+    }
+  }, {
+    key: 'createDialogFlowRequest',
+    value: function createDialogFlowRequest(message) {
+      var url = "https://api.dialogflow.com/v1/query?v=20150910";
+      var clientToken = this.props.dfClientToken;
+      var config = {
+        method: 'post',
+        url: url,
+        data: null,
+        headers: {
+          Authorization: 'Bearer ' + clientToken,
+          'content-type': 'application/json'
+        }
+      };
+
+      var dialogflowOptions = {
+        lang: 'en',
+        sessionId: this.state.sessionId
+      };
+
+      dialogflowOptions.originalRequest = { data: {} };
+      dialogflowOptions.originalRequest.data = { user: {} };
+      dialogflowOptions.originalRequest.data.user.accessToken = "";
+
+      config.data = dialogflowOptions;
+
+      if (message === "welcome") {
+        config.data.event = { name: "welcome" };
+      } else {
+        config.data.query = message;
+      }
+
+      return config;
     }
   }, {
     key: 'componentDidMount',
@@ -1468,17 +1551,31 @@ var ChatBot = function (_Component) {
     }
   }, {
     key: 'handleSubmitButton',
-    value: function handleSubmitButton() {}
+    value: function handleSubmitButton() {
+      var _state = this.state,
+          inputValue = _state.inputValue,
+          speaking = _state.speaking,
+          recognitionEnable = _state.recognitionEnable;
+
+      if (((0, _isEmpty3.default)(inputValue) || speaking) && recognitionEnable) {
+        this.recognition.speak();
+        if (!speaking) {
+          this.setState({ speaking: true });
+        }
+        return;
+      }
+      this.submitUserMessage();
+    }
   }, {
     key: 'submitUserMessage',
     value: function submitUserMessage() {
       var _this3 = this;
 
-      var _state = this.state,
-          defaultUserSettings = _state.defaultUserSettings,
-          inputValue = _state.inputValue,
-          previousSteps = _state.previousSteps,
-          renderedSteps = _state.renderedSteps;
+      var _state2 = this.state,
+          defaultUserSettings = _state2.defaultUserSettings,
+          inputValue = _state2.inputValue,
+          previousSteps = _state2.previousSteps,
+          renderedSteps = _state2.renderedSteps;
       var currentStep = this.state.currentStep;
 
 
@@ -1493,9 +1590,10 @@ var ChatBot = function (_Component) {
         var userSettings = { delay: 1000, avatar: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/PjwhRE9DVFlQRSBzdmcgIFBVQkxJQyAnLS8vVzNDLy9EVEQgU1ZHIDEuMS8vRU4nICAnaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkJz48c3ZnIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgLTIwOC41IDIxIDEwMCAxMDAiIGlkPSJMYXllcl8xIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9Ii0yMDguNSAyMSAxMDAgMTAwIiB4bWw6c3BhY2U9InByZXNlcnZlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnNrZXRjaD0iaHR0cDovL3d3dy5ib2hlbWlhbmNvZGluZy5jb20vc2tldGNoL25zIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayI+PGc+PGNpcmNsZSBjeD0iLTE1OC41IiBjeT0iNzEiIGZpbGw9IiNGNUVFRTUiIGlkPSJNYXNrIiByPSI1MCIvPjxnPjxkZWZzPjxjaXJjbGUgY3g9Ii0xNTguNSIgY3k9IjcxIiBpZD0iTWFza18yXyIgcj0iNTAiLz48L2RlZnM+PGNsaXBQYXRoIGlkPSJNYXNrXzRfIj48dXNlIG92ZXJmbG93PSJ2aXNpYmxlIiB4bGluazpocmVmPSIjTWFza18yXyIvPjwvY2xpcFBhdGg+PHBhdGggY2xpcC1wYXRoPSJ1cmwoI01hc2tfNF8pIiBkPSJNLTEwOC41LDEyMXYtMTRjMCwwLTIxLjItNC45LTI4LTYuN2MtMi41LTAuNy03LTMuMy03LTEyICAgICBjMC0xLjcsMC02LjMsMC02LjNoLTE1aC0xNWMwLDAsMCw0LjYsMCw2LjNjMCw4LjctNC41LDExLjMtNywxMmMtNi44LDEuOS0yOC4xLDcuMy0yOC4xLDYuN3YxNGg1MC4xSC0xMDguNXoiIGZpbGw9IiNFNkMxOUMiIGlkPSJNYXNrXzNfIi8+PGcgY2xpcC1wYXRoPSJ1cmwoI01hc2tfNF8pIj48ZGVmcz48cGF0aCBkPSJNLTEwOC41LDEyMXYtMTRjMCwwLTIxLjItNC45LTI4LTYuN2MtMi41LTAuNy03LTMuMy03LTEyYzAtMS43LDAtNi4zLDAtNi4zaC0xNWgtMTVjMCwwLDAsNC42LDAsNi4zICAgICAgIGMwLDguNy00LjUsMTEuMy03LDEyYy02LjgsMS45LTI4LjEsNy4zLTI4LjEsNi43djE0aDUwLjFILTEwOC41eiIgaWQ9Ik1hc2tfMV8iLz48L2RlZnM+PGNsaXBQYXRoIGlkPSJNYXNrXzVfIj48dXNlIG92ZXJmbG93PSJ2aXNpYmxlIiB4bGluazpocmVmPSIjTWFza18xXyIvPjwvY2xpcFBhdGg+PHBhdGggY2xpcC1wYXRoPSJ1cmwoI01hc2tfNV8pIiBkPSJNLTE1OC41LDEwMC4xYzEyLjcsMCwyMy0xOC42LDIzLTM0LjQgICAgICBjMC0xNi4yLTEwLjMtMjQuNy0yMy0yNC43cy0yMyw4LjUtMjMsMjQuN0MtMTgxLjUsODEuNS0xNzEuMiwxMDAuMS0xNTguNSwxMDAuMXoiIGZpbGw9IiNENEIwOEMiIGlkPSJoZWFkLXNoYWRvdyIvPjwvZz48L2c+PHBhdGggZD0iTS0xNTguNSw5NmMxMi43LDAsMjMtMTYuMywyMy0zMWMwLTE1LjEtMTAuMy0yMy0yMy0yM3MtMjMsNy45LTIzLDIzICAgIEMtMTgxLjUsNzkuNy0xNzEuMiw5Ni0xNTguNSw5NnoiIGZpbGw9IiNGMkNFQTUiIGlkPSJoZWFkIi8+PC9nPjwvc3ZnPg==' };
 
         currentStep = Object.assign({}, userSettings, step);
-        currentStep.user = { name: "Jon" };
+        currentStep.user = {};
         renderedSteps.push(currentStep);
         previousSteps.push(currentStep);
+
         this.setState({
           currentStep: currentStep,
           renderedSteps: renderedSteps,
@@ -1517,56 +1615,75 @@ var ChatBot = function (_Component) {
 
       var message = currentStep.message;
 
-      var url = "https://api.dialogflow.com/v1/query?v=20150910";
-      var clientToken = "d91096f647be47489a2884294259935b";
-      var config = {
-        method: 'post',
-        url: url,
-        data: null,
-        headers: {
-          Authorization: 'Bearer ' + clientToken,
-          'content-type': 'application/json'
-        }
-      };
-
-      var dialogflowOptions = {
-        lang: 'en',
-        sessionId: this.state.sessionId,
-        query: null
-      };
-
-      dialogflowOptions.originalRequest = { data: {} };
-      dialogflowOptions.originalRequest.data = { user: {} };
-      dialogflowOptions.originalRequest.data.user.accessToken = "";
-
-      config.data = dialogflowOptions;
-      config.data.query = message;
+      var config = this.createDialogFlowRequest(message);
 
       try {
-        var result = await (0, _axios2.default)(config);
-        var response = result.data.result.fulfillment.messages[0].displayText || result.data.result.fulfillment.speech;
-        var _message = Object.assign({}, this.state.renderedSteps[0], { message: response, value: response });
+        await async function () {
+          var result = await (0, _axios2.default)(config);
 
-        if (result.data.result.fulfillment.messages.length > 1) {
-          var listItems = result.data.result.fulfillment.messages[1].items; //listcard send
-          // console.log('LIST ITEMS ARE HERE ', listItems);
-          this.state.renderedSteps.push(_message);
-          listItems.forEach(function (item) {
-            // let newItem = Object.assign({}, this.state.renderedSteps[0], { message: item.description, value: item.description })
-            _this4.renderStep({ component: _react2.default.createElement(
-                'button',
-                null,
-                item.description
-              ) });
-            // this.state.renderedSteps.push(newItem);
-          });
-        }
-        console.log("result", result);
+          var fulfillment = result.data.result.fulfillment;
 
-        this.setState({ renderedSteps: this.state.renderedSteps });
+          var message = void 0;
+
+          // if messages are > 1, we are getting more than text back and need to use custom component
+          if (fulfillment.messages.length > 1) {
+
+            // Loop through all messages to see what kind of component we have to create
+            for (var i = 0; i < fulfillment.messages.length; i++) {
+              var msg = fulfillment.messages[i];
+              if (msg.type === "basic_card") {
+                message = Object.assign({}, _this4.state.renderedSteps[0], { component: _react2.default.createElement(_BasicCard2.default, { card: msg }) });
+                break;
+              }
+              if (msg.type === "list_card") {
+                var listItems = msg.items;
+                listItems.forEach(function (item) {
+                  message = Object.assign({}, _this4.state.renderedSteps[0], { component: _react2.default.createElement(
+                      'button',
+                      { onClick: function onClick() {
+                          _this4.listDescription(item.title);
+                        } },
+                      item.title
+                    )
+                  });
+                  _this4.state.renderedSteps.push(message);
+                });
+                break;
+              }
+              if (msg.type === "media_content") {
+                message = Object.assign({}, _this4.state.renderedSteps[0], { component: _react2.default.createElement(_MediaCard2.default, { messages: fulfillment.messages, listDescription: _this4.listDescription }) });
+                break;
+              }
+              //if messages are all simple text, handle with simple text response
+              if (!message) {
+                var response = fulfillment.messages[0].displayText || fulfillment.speech;
+                message = Object.assign({}, _this4.state.renderedSteps[0], { message: response, value: response });
+              }
+            }
+          } else {
+            // if there are no messages, just render a text resposne
+            var _response = fulfillment.messages[0].displayText || fulfillment.speech;
+            message = Object.assign({}, _this4.state.renderedSteps[0], { message: _response, value: _response });
+          }
+
+          _this4.state.renderedSteps.push(message);
+
+          _this4.setState({ renderedSteps: _this4.state.renderedSteps });
+        }();
       } catch (err) {
-        console.log("err", err);
+        console.log("Error getBotResponse", err);
       }
+    }
+  }, {
+    key: 'listDescription',
+    value: function listDescription(item) {
+      var _this5 = this;
+
+      this.setState({
+        inputValue: item
+      }, function () {
+        return _this5.handleSubmitButton();
+      });
     }
   }, {
     key: 'toggleChatBot',
@@ -1624,23 +1741,22 @@ var ChatBot = function (_Component) {
         hideBotAvatar: hideBotAvatar,
         hideUserAvatar: hideUserAvatar,
         isFirst: this.isFirstPosition(step)
-        // isLast={this.isLastPosition(step)}
       });
     }
   }, {
     key: 'render',
     value: function render() {
-      var _this5 = this;
+      var _this6 = this;
 
-      var _state2 = this.state,
-          currentStep = _state2.currentStep,
-          disabled = _state2.disabled,
-          inputInvalid = _state2.inputInvalid,
-          inputValue = _state2.inputValue,
-          opened = _state2.opened,
-          renderedSteps = _state2.renderedSteps,
-          speaking = _state2.speaking,
-          recognitionEnable = _state2.recognitionEnable;
+      var _state3 = this.state,
+          currentStep = _state3.currentStep,
+          disabled = _state3.disabled,
+          inputInvalid = _state3.inputInvalid,
+          inputValue = _state3.inputValue,
+          opened = _state3.opened,
+          renderedSteps = _state3.renderedSteps,
+          speaking = _state3.speaking,
+          recognitionEnable = _state3.recognitionEnable;
       var _props3 = this.props,
           className = _props3.className,
           contentStyle = _props3.contentStyle,
@@ -1672,7 +1788,7 @@ var ChatBot = function (_Component) {
         floating && _react2.default.createElement(
           _components.HeaderIcon,
           { className: 'rsc-header-close-button', onClick: function onClick() {
-              return _this5.toggleChatBot(false);
+              return _this6.toggleChatBot(false);
             } },
           _react2.default.createElement(_icons.CloseIcon, null)
         )
@@ -1694,7 +1810,7 @@ var ChatBot = function (_Component) {
             style: floatingStyle,
             opened: opened,
             onClick: function onClick() {
-              return _this5.toggleChatBot(true);
+              return _this6.toggleChatBot(true);
             }
           },
           _react2.default.createElement(_icons.ChatIcon, null)
@@ -1716,7 +1832,7 @@ var ChatBot = function (_Component) {
             {
               className: 'rsc-content',
               innerRef: function innerRef(contentRef) {
-                return _this5.content = contentRef;
+                return _this6.content = contentRef;
               },
               floating: floating,
               style: contentStyle,
@@ -1732,7 +1848,7 @@ var ChatBot = function (_Component) {
               type: 'textarea',
               style: inputStyle,
               innerRef: function innerRef(inputRef) {
-                return _this5.input = inputRef;
+                return _this6.input = inputRef;
               },
               className: 'rsc-input',
               placeholder: inputInvalid ? '' : inputPlaceholder,
@@ -1796,7 +1912,6 @@ ChatBot.propTypes = {
   recognitionEnable: _propTypes2.default.bool,
   recognitionLang: _propTypes2.default.string,
   recognitionPlaceholder: _propTypes2.default.string,
-  steps: _propTypes2.default.array.isRequired,
   style: _propTypes2.default.object,
   submitButtonStyle: _propTypes2.default.object,
   userAvatar: _propTypes2.default.string,
@@ -1847,17 +1962,17 @@ ChatBot.defaultProps = {
 exports.default = ChatBot;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseKeys = __webpack_require__(18),
-    getTag = __webpack_require__(20),
-    isArguments = __webpack_require__(21),
-    isArray = __webpack_require__(22),
-    isArrayLike = __webpack_require__(23),
-    isBuffer = __webpack_require__(28),
-    isPrototype = __webpack_require__(29),
-    isTypedArray = __webpack_require__(30);
+var baseKeys = __webpack_require__(19),
+    getTag = __webpack_require__(21),
+    isArguments = __webpack_require__(22),
+    isArray = __webpack_require__(23),
+    isArrayLike = __webpack_require__(24),
+    isBuffer = __webpack_require__(29),
+    isPrototype = __webpack_require__(30),
+    isTypedArray = __webpack_require__(31);
 
 /** `Object#toString` result references. */
 var mapTag = '[object Map]',
@@ -1930,10 +2045,10 @@ module.exports = isEmpty;
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var overArg = __webpack_require__(19);
+var overArg = __webpack_require__(20);
 
 /* Built-in method references for those with the same name as other `lodash` methods. */
 var nativeKeys = overArg(Object.keys, Object);
@@ -1942,7 +2057,7 @@ module.exports = nativeKeys;
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 /**
@@ -1963,7 +2078,7 @@ module.exports = overArg;
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -1991,7 +2106,7 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 /**
@@ -2015,7 +2130,7 @@ module.exports = stubFalse;
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports) {
 
 /**
@@ -2047,11 +2162,11 @@ module.exports = isArray;
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var isFunction = __webpack_require__(24),
-    isLength = __webpack_require__(27);
+var isFunction = __webpack_require__(25),
+    isLength = __webpack_require__(28);
 
 /**
  * Checks if `value` is array-like. A value is considered array-like if it's
@@ -2086,11 +2201,11 @@ module.exports = isArrayLike;
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var baseGetTag = __webpack_require__(25),
-    isObject = __webpack_require__(26);
+var baseGetTag = __webpack_require__(26),
+    isObject = __webpack_require__(27);
 
 /** `Object#toString` result references. */
 var asyncTag = '[object AsyncFunction]',
@@ -2129,7 +2244,7 @@ module.exports = isFunction;
 
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports) {
 
 /** Used for built-in method references. */
@@ -2157,7 +2272,7 @@ module.exports = objectToString;
 
 
 /***/ }),
-/* 26 */
+/* 27 */
 /***/ (function(module, exports) {
 
 /**
@@ -2194,7 +2309,7 @@ module.exports = isObject;
 
 
 /***/ }),
-/* 27 */
+/* 28 */
 /***/ (function(module, exports) {
 
 /** Used as references for various `Number` constants. */
@@ -2232,30 +2347,6 @@ function isLength(value) {
 }
 
 module.exports = isLength;
-
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports) {
-
-/**
- * This method returns `false`.
- *
- * @static
- * @memberOf _
- * @since 4.13.0
- * @category Util
- * @returns {boolean} Returns `false`.
- * @example
- *
- * _.times(2, _.stubFalse);
- * // => [false, false]
- */
-function stubFalse() {
-  return false;
-}
-
-module.exports = stubFalse;
 
 
 /***/ }),
@@ -2308,6 +2399,30 @@ module.exports = stubFalse;
 
 /***/ }),
 /* 31 */
+/***/ (function(module, exports) {
+
+/**
+ * This method returns `false`.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.13.0
+ * @category Util
+ * @returns {boolean} Returns `false`.
+ * @example
+ *
+ * _.times(2, _.stubFalse);
+ * // => [false, false]
+ */
+function stubFalse() {
+  return false;
+}
+
+module.exports = stubFalse;
+
+
+/***/ }),
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2320,7 +2435,7 @@ module.exports = stubFalse;
  * LICENSE file in the root directory of this source tree.
  */
 
-var k=__webpack_require__(32),n=__webpack_require__(33),p=__webpack_require__(34),q=__webpack_require__(35),r="function"===typeof Symbol&&Symbol.for,t=r?Symbol.for("react.element"):60103,u=r?Symbol.for("react.portal"):60106,v=r?Symbol.for("react.fragment"):60107,w=r?Symbol.for("react.strict_mode"):60108,x=r?Symbol.for("react.profiler"):60114,y=r?Symbol.for("react.provider"):60109,z=r?Symbol.for("react.context"):60110,A=r?Symbol.for("react.async_mode"):60111,B=
+var k=__webpack_require__(33),n=__webpack_require__(34),p=__webpack_require__(35),q=__webpack_require__(36),r="function"===typeof Symbol&&Symbol.for,t=r?Symbol.for("react.element"):60103,u=r?Symbol.for("react.portal"):60106,v=r?Symbol.for("react.fragment"):60107,w=r?Symbol.for("react.strict_mode"):60108,x=r?Symbol.for("react.profiler"):60114,y=r?Symbol.for("react.provider"):60109,z=r?Symbol.for("react.context"):60110,A=r?Symbol.for("react.async_mode"):60111,B=
 r?Symbol.for("react.forward_ref"):60112;r&&Symbol.for("react.timeout");var C="function"===typeof Symbol&&Symbol.iterator;function D(a){for(var b=arguments.length-1,e="https://reactjs.org/docs/error-decoder.html?invariant="+a,c=0;c<b;c++)e+="&args[]="+encodeURIComponent(arguments[c+1]);n(!1,"Minified React error #"+a+"; visit %s for the full message or use the non-minified dev environment for full errors and additional helpful warnings. ",e)}
 var E={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function F(a,b,e){this.props=a;this.context=b;this.refs=p;this.updater=e||E}F.prototype.isReactComponent={};F.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?D("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};F.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};function G(){}
 G.prototype=F.prototype;function H(a,b,e){this.props=a;this.context=b;this.refs=p;this.updater=e||E}var I=H.prototype=new G;I.constructor=H;k(I,F.prototype);I.isPureReactComponent=!0;var J={current:null},K=Object.prototype.hasOwnProperty,L={key:!0,ref:!0,__self:!0,__source:!0};
@@ -2336,7 +2451,7 @@ assign:k}},Y={default:X},Z=Y&&X||Y;module.exports=Z.default?Z.default:Z;
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2433,7 +2548,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2492,7 +2607,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2515,7 +2630,7 @@ if (false) {
 module.exports = emptyObject;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2557,7 +2672,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2570,9 +2685,9 @@ module.exports = emptyFunction;
 
 
 
-var emptyFunction = __webpack_require__(37);
-var invariant = __webpack_require__(38);
-var ReactPropTypesSecret = __webpack_require__(39);
+var emptyFunction = __webpack_require__(38);
+var invariant = __webpack_require__(39);
+var ReactPropTypesSecret = __webpack_require__(40);
 
 module.exports = function() {
   function shim(props, propName, componentName, location, propFullName, secret) {
@@ -2622,7 +2737,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2664,7 +2779,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2723,7 +2838,7 @@ function invariant(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2740,47 +2855,6 @@ var ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 module.exports = ReactPropTypesSecret;
 
-
-/***/ }),
-/* 40 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function(){
-	var randomID = function(len,pattern){
-		var possibilities = ["abcdefghijklmnopqrstuvwxyz","ABCDEFGHIJKLMNOPQRSTUVWXYZ", "0123456789", "~!@#$%^&()_+-={}[];\',"];
-		var chars = "";
-
-		var pattern = pattern ? pattern : "aA0";
-		pattern.split('').forEach(function(a){
-			if(!isNaN(parseInt(a))){
-				chars += possibilities[2];
-			}else if(/[a-z]/.test(a)){
-				chars += possibilities[0];
-			}else if(/[A-Z]/.test(a)){
-				chars += possibilities[1];
-			}else{
-				chars += possibilities[3];
-			}
-		});
-		
-		var len = len ? len : 30;
-
-		var result = '';
-
-		while(len--){ 
-			result += chars.charAt(Math.floor(Math.random() * chars.length)); 
-		};
-
-		return result;
-	};
-
-	if(true){
-		module.exports = randomID;
-	} else {
-		window["randomID"] = randomID;
-	};
-
-})();
 
 /***/ }),
 /* 41 */
@@ -2841,6 +2915,8 @@ var _CustomStepContainer = __webpack_require__(45);
 
 var _CustomStepContainer2 = _interopRequireDefault(_CustomStepContainer);
 
+var _BasicCard = __webpack_require__(9);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -2877,11 +2953,7 @@ var CustomStep = function (_Component) {
 
 
       setTimeout(function () {
-        _this2.setState({ loading: false }, function () {
-          if (!waitAction && !step.rendered) {
-            _this2.props.triggerNextStep();
-          }
-        });
+        _this2.setState({ loading: false }, function () {});
       }, delay);
     }
   }, {
@@ -2890,16 +2962,18 @@ var CustomStep = function (_Component) {
       var _props = this.props,
           step = _props.step,
           steps = _props.steps,
-          previousStep = _props.previousStep,
-          triggerNextStep = _props.triggerNextStep;
+          previousStep = _props.previousStep;
       var component = step.component;
 
-      return _react2.default.cloneElement(component, {
+
+      var cloned = _react2.default.cloneElement(component, {
+        // componentProps: component.props,
         step: step,
         steps: steps,
-        previousStep: previousStep,
-        triggerNextStep: triggerNextStep
+        previousStep: previousStep
       });
+
+      return cloned;
     }
   }, {
     key: 'render',
@@ -2923,11 +2997,10 @@ var CustomStep = function (_Component) {
 }(_react.Component);
 
 CustomStep.propTypes = {
-  step: _propTypes2.default.object.isRequired,
-  steps: _propTypes2.default.object.isRequired,
-  style: _propTypes2.default.object.isRequired,
-  previousStep: _propTypes2.default.object.isRequired,
-  triggerNextStep: _propTypes2.default.func.isRequired
+  // step: PropTypes.object.isRequired,
+  // steps: PropTypes.object.isRequired,
+  // style: PropTypes.object.isRequired,
+  // previousStep: PropTypes.object.isRequired,
 };
 
 exports.default = CustomStep;
@@ -3653,7 +3726,7 @@ var _updateSchema2 = _interopRequireDefault(_updateSchema);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var JSON = __webpack_require__(9);
+var JSON = __webpack_require__(10);
 
 var schema = {
   parse: function parse(step) {
@@ -3978,7 +4051,7 @@ exports.default = [{
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var JSON = __webpack_require__(9);
+var JSON = __webpack_require__(10);
 
 /* istanbul ignore next */
 var getData = function getData(_ref, callback) {
@@ -4086,7 +4159,7 @@ module.exports = __webpack_require__(64);
 
 
 var utils = __webpack_require__(1);
-var bind = __webpack_require__(10);
+var bind = __webpack_require__(11);
 var Axios = __webpack_require__(66);
 var defaults = __webpack_require__(7);
 
@@ -4121,9 +4194,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(14);
+axios.Cancel = __webpack_require__(15);
 axios.CancelToken = __webpack_require__(81);
-axios.isCancel = __webpack_require__(13);
+axios.isCancel = __webpack_require__(14);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -4466,7 +4539,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
 "use strict";
 
 
-var createError = __webpack_require__(12);
+var createError = __webpack_require__(13);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -4899,7 +4972,7 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(78);
-var isCancel = __webpack_require__(13);
+var isCancel = __webpack_require__(14);
 var defaults = __webpack_require__(7);
 var isAbsoluteURL = __webpack_require__(79);
 var combineURLs = __webpack_require__(80);
@@ -5059,7 +5132,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
 "use strict";
 
 
-var Cancel = __webpack_require__(14);
+var Cancel = __webpack_require__(15);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -6026,6 +6099,92 @@ var isMobile = exports.isMobile = function isMobile() {
   return (/iphone|ipod|android|ie|blackberry|fennec/i.test(navigator.userAgent)
   );
 };
+
+/***/ }),
+/* 100 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(2);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MediaCard = function (_Component) {
+  _inherits(MediaCard, _Component);
+
+  function MediaCard() {
+    _classCallCheck(this, MediaCard);
+
+    return _possibleConstructorReturn(this, (MediaCard.__proto__ || Object.getPrototypeOf(MediaCard)).call(this));
+  }
+
+  _createClass(MediaCard, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var messages = this.props.messages;
+
+      var media = void 0,
+          chips = void 0;
+      messages.forEach(function (msg) {
+        if (msg.type === "media_content") {
+          media = msg;
+        } else if (msg.type === "suggestion_chips") {
+          chips = msg;
+        }
+      });
+
+      return _react2.default.createElement(
+        "div",
+        null,
+        media.mediaObjects && _react2.default.createElement(
+          "div",
+          null,
+          _react2.default.createElement(
+            "h5",
+            null,
+            media.mediaObjects[0].name
+          ),
+          _react2.default.createElement(
+            "audio",
+            { controls: true },
+            _react2.default.createElement("source", { src: media.mediaObjects[0].contentUrl, type: "audio/mp3" })
+          )
+        ),
+        chips && chips.suggestions.map(function (chip) {
+          return _react2.default.createElement(
+            "button",
+            { onClick: function onClick() {
+                return _this2.props.listDescription(chip.title);
+              } },
+            chip.title
+          );
+        })
+      );
+    }
+  }]);
+
+  return MediaCard;
+}(_react.Component);
+
+exports.default = MediaCard;
 
 /***/ })
 /******/ ]);
